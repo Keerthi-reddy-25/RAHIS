@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HabitIQ Analytics — View weekly habit trends, charts, and progress insights to optimize your daily routine.">
+  <title>Analytics — HabitIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="dashboard.html" class="nav-brand">
+        <div class="nav-brand-icon">🧠</div>
+        <span>HabitIQ</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="analytics.html" class="active">Analytics</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="goals.html">Goals</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="btn-nav-logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-container">
+
+    <!-- Header -->
+    <div class="page-header fade-in">
+      <h1>Analytics & Insights 📊</h1>
+      <p>Track your weekly progress and discover patterns</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="analytics-summary fade-in">
+      <div class="summary-card">
+        <div class="summary-value" id="weekAvg">--</div>
+        <div class="summary-label">Overall Avg Score</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="bestDay">--</div>
+        <div class="summary-label">Best Day</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="daysLogged">0/365</div>
+        <div class="summary-label">Days Logged</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="exerciseRate">--</div>
+        <div class="summary-label">Exercise Rate</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="totalAllTime">0</div>
+        <div class="summary-label">Total Entries</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="currentStreak">0</div>
+        <div class="summary-label">Current Streak</div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="card" style="display: none;">
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <h3>No Data Yet</h3>
+        <p>Start logging your daily habits on the Dashboard to see your analytics here.</p>
+        <br>
+        <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div id="chartsSection">
+
+      <!-- Row 1: Score Trend + Breakdown -->
+      <div class="analytics-grid slide-up">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon purple">📈</div>
+            <div>
+              <div class="card-title">Habit Score Trend</div>
+              <div class="card-subtitle">Your daily score over the past year</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="scoreChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">🎯</div>
+            <div>
+              <div class="card-title">Habit Breakdown</div>
+              <div class="card-subtitle">Your averages vs ideal targets</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="breakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Metrics + Completion -->
+      <div class="analytics-grid slide-up" style="animation-delay: 0.15s;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon orange">📊</div>
+            <div>
+              <div class="card-title">Daily Metrics Comparison</div>
+              <div class="card-subtitle">Sleep, stress &amp; screen time side by side</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="scatterChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon red">🏆</div>
+            <div>
+              <div class="card-title">Completion Distribution</div>
+              <div class="card-subtitle">How your days are rated</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="completionChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  KAGGLE DATASET INSIGHTS SECTION            -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div style="margin-top: 48px;">
+      <div class="page-header fade-in">
+        <h1>📊 Research Dataset Insights</h1>
+        <p>Analysis of 175 records from Kaggle's "Sleep, Screen Time &amp; Stress" dataset — 25 users tracked over 7 days</p>
+      </div>
+
+      <!-- Dataset Summary -->
+      <div class="analytics-summary fade-in" id="datasetSummary">
+        <div class="summary-card">
+          <div class="summary-value" id="dsRecords">--</div>
+          <div class="summary-label">Total Records</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="dsUsers">--</div>
+          <div class="summary-label">Unique Users</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="dsAvgScore">--</div>
+          <div class="summary-label">Avg Habit Score</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="dsAvgSleep">--</div>
+          <div class="summary-label">Avg Sleep (hrs)</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="dsExerciseRate">--</div>
+          <div class="summary-label">Exercise Rate</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="dsLikelyRate">--</div>
+          <div class="summary-label">Success Rate</div>
+        </div>
+      </div>
+
+      <!-- Dataset Charts Row 1 -->
+      <div class="analytics-grid slide-up">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon purple">🌙</div>
+            <div>
+              <div class="card-title">Sleep vs Stress Correlation</div>
+              <div class="card-subtitle">How sleep duration affects stress levels</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsSleepStressChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon orange">📱</div>
+            <div>
+              <div class="card-title">Screen Time Impact on Mood</div>
+              <div class="card-subtitle">Mood &amp; habit scores by screen usage</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsScreenMoodChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dataset Charts Row 2 -->
+      <div class="analytics-grid slide-up" style="animation-delay: 0.15s;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">👥</div>
+            <div>
+              <div class="card-title">Age Group Analysis</div>
+              <div class="card-subtitle">Habits comparison across age groups</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsAgeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon red">🏆</div>
+            <div>
+              <div class="card-title">Top vs Bottom Performers</div>
+              <div class="card-subtitle">What separates high scorers from low</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsPerformanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dataset Charts Row 3 -->
+      <div class="analytics-grid slide-up" style="animation-delay: 0.25s;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon purple">⚡</div>
+            <div>
+              <div class="card-title">Gender Comparison</div>
+              <div class="card-subtitle">Male vs Female habit averages</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsGenderChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">📈</div>
+            <div>
+              <div class="card-title">Score Distribution</div>
+              <div class="card-subtitle">Overall dataset habit score spread</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="dsDistributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="sampleData.js"></script>
+  <script src="kaggleData.js"></script>
+  <script src="app.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>

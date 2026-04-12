@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HabitIQ Dashboard — Log your daily habits, get your habit score, receive adaptive suggestions, and track your streaks.">
+  <title>Dashboard — HabitIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="dashboard.html" class="nav-brand">
+        <div class="nav-brand-icon">🧠</div>
+        <span>HabitIQ</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="analytics.html">Analytics</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="goals.html">Goals</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="btn-nav-logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main class="page-container">
+
+    <!-- Header -->
+    <div class="page-header fade-in">
+      <h1>Good day, <span id="greetUser">User</span> 👋</h1>
+      <p>Log your habits and get real-time adaptive insights</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon orange">🔥</div>
+        <div class="stat-info">
+          <h3><span id="streakCount">0</span> <span id="streakFire" class="streak-fire" style="display:none">🔥</span></h3>
+          <p>Day Streak</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple">📊</div>
+        <div class="stat-info">
+          <h3 id="todayScore">--</h3>
+          <p>Today's Score</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">📅</div>
+        <div class="stat-info">
+          <h3 id="totalEntries">0</h3>
+          <p>Days Tracked</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">📈</div>
+        <div class="stat-info">
+          <h3 id="avgScore">--</h3>
+          <p>Avg Score</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+
+      <!-- Habit Input Form -->
+      <div class="card slide-up">
+        <div class="card-header">
+          <div class="card-icon purple">📝</div>
+          <div>
+            <div class="card-title">Log Today's Habits</div>
+            <div class="card-subtitle">Fill in your daily metrics</div>
+          </div>
+        </div>
+
+        <form id="habitForm">
+          <div class="form-group">
+            <label for="sleepHours">😴 Sleep Hours</label>
+            <input type="number" id="sleepHours" class="form-input" placeholder="e.g. 7" min="0" max="24" step="0.5" required>
+          </div>
+
+          <div class="form-group">
+            <label for="stressLevel">😰 Stress Level (1–10)</label>
+            <input type="number" id="stressLevel" class="form-input" placeholder="e.g. 5" min="1" max="10" step="1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="screenTime">📱 Screen Time (hours)</label>
+            <input type="number" id="screenTime" class="form-input" placeholder="e.g. 4" min="0" max="24" step="0.5" required>
+          </div>
+
+          <div class="form-group">
+            <label for="exercise">🏃 Did You Exercise?</label>
+            <select id="exercise" class="form-input" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="yes">Yes ✅</option>
+              <option value="no">No ❌</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="workHours">💼 Work / Study Hours</label>
+            <input type="number" id="workHours" class="form-input" placeholder="e.g. 6" min="0" max="24" step="0.5" required>
+          </div>
+
+          <div class="form-group">
+            <label>😊 How's Your Mood?</label>
+            <div class="mood-picker" id="moodPicker">
+              <button type="button" class="mood-btn" data-mood="1" title="Awful">😫</button>
+              <button type="button" class="mood-btn" data-mood="2" title="Bad">😔</button>
+              <button type="button" class="mood-btn" data-mood="3" title="Meh">😐</button>
+              <button type="button" class="mood-btn" data-mood="4" title="Good">😊</button>
+              <button type="button" class="mood-btn" data-mood="5" title="Amazing">🤩</button>
+            </div>
+            <input type="hidden" id="moodScore" value="">
+          </div>
+
+          <div class="form-group">
+            <label for="waterIntake">💧 Water Intake (glasses)</label>
+            <div class="water-tracker" id="waterTracker">
+              <button type="button" class="water-btn" id="waterMinus">−</button>
+              <span class="water-count" id="waterCount">0</span>
+              <button type="button" class="water-btn" id="waterPlus">+</button>
+              <span class="water-label">/ 8 glasses</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-full btn-lg" id="submitHabits">
+            ✨ Analyze My Habits
+          </button>
+        </form>
+      </div>
+
+      <!-- Results Section -->
+      <div id="resultsSection" style="display: none;">
+
+        <!-- Habit Score -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div class="card-icon green">🎯</div>
+            <div>
+              <div class="card-title">Habit Score</div>
+              <div class="card-subtitle">Your wellness performance today</div>
+            </div>
+          </div>
+
+          <div class="score-ring-container">
+            <div class="score-ring">
+              <svg viewBox="0 0 160 160">
+                <defs>
+                  <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop id="gradStop1" offset="0%" stop-color="#6366f1"/>
+                    <stop id="gradStop2" offset="100%" stop-color="#4f46e5"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-bg" cx="80" cy="80" r="70"/>
+                <circle class="ring-fill" id="ringFill" cx="80" cy="80" r="70"/>
+              </svg>
+              <div class="score-value">
+                <span class="number" id="scoreNumber">0%</span>
+                <span class="label">Score</span>
+              </div>
+            </div>
+
+            <div id="prediction" class="prediction-badge positive">
+              ✅ Likely to Complete Goals
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon orange">💡</div>
+            <div>
+              <div class="card-title">Adaptive Suggestions</div>
+              <div class="card-subtitle">Personalized recommendations</div>
+            </div>
+          </div>
+          <ul class="suggestions-list" id="suggestionsList"></ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Health Tips -->
+    <div class="card slide-up" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-icon green">🩺</div>
+        <div>
+          <div class="card-title">Daily Health Tips</div>
+          <div class="card-subtitle">Science-backed tips for a healthier lifestyle</div>
+        </div>
+      </div>
+      <div class="tips-carousel" id="healthTips"></div>
+    </div>
+
+    <!-- Mini Activity Heatmap -->
+    <div class="card slide-up" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-icon purple">📅</div>
+        <div>
+          <div class="card-title">Activity Heatmap</div>
+          <div class="card-subtitle">Your habit consistency over the past 90 days</div>
+        </div>
+      </div>
+      <div class="heatmap-wrapper">
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="heatmap-legend">
+          <span class="heatmap-label">Less</span>
+          <div class="heatmap-cell" style="background:var(--bg-tertiary)"></div>
+          <div class="heatmap-cell" style="background:rgba(16,185,129,0.2)"></div>
+          <div class="heatmap-cell" style="background:rgba(16,185,129,0.4)"></div>
+          <div class="heatmap-cell" style="background:rgba(16,185,129,0.6)"></div>
+          <div class="heatmap-cell" style="background:rgba(16,185,129,0.9)"></div>
+          <span class="heatmap-label">More</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="sampleData.js"></script>
+  <script src="app.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

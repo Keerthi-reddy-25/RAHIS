@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HabitIQ History — View, search, and export your complete habit tracking history.">
+  <title>History — HabitIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="dashboard.html" class="nav-brand">
+        <div class="nav-brand-icon">🧠</div>
+        <span>HabitIQ</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="analytics.html">Analytics</a></li>
+        <li><a href="history.html" class="active">History</a></li>
+        <li><a href="goals.html">Goals</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="btn-nav-logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-container">
+    <div class="page-header fade-in">
+      <h1>Habit History 📋</h1>
+      <p>View, search, and manage all your logged habits</p>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="card fade-in" style="margin-bottom: 24px;">
+      <div class="history-controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" class="form-input" placeholder="🔍 Search by date...">
+        </div>
+        <div class="control-buttons">
+          <select id="sortOrder" class="form-input" style="max-width:180px;">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="highest">Highest Score</option>
+            <option value="lowest">Lowest Score</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-row fade-in">
+      <div class="stat-card">
+        <div class="stat-icon purple">📅</div>
+        <div class="stat-info">
+          <h3 id="histTotal">0</h3>
+          <p>Total Entries</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">📈</div>
+        <div class="stat-info">
+          <h3 id="histAvg">--</h3>
+          <p>Average Score</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">🏆</div>
+        <div class="stat-info">
+          <h3 id="histBest">--</h3>
+          <p>Best Score</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">🔥</div>
+        <div class="stat-info">
+          <h3 id="histStreak">0</h3>
+          <p>Current Streak</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="card slide-up">
+      <div class="card-header">
+        <div class="card-icon purple">📊</div>
+        <div>
+          <div class="card-title">All Habit Entries</div>
+          <div class="card-subtitle" id="showingCount">Showing 0 entries</div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table" id="historyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Sleep</th>
+              <th>Stress</th>
+              <th>Screen</th>
+              <th>Exercise</th>
+              <th>Work</th>
+              <th>Mood</th>
+              <th>Water</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyHistory" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📭</div>
+        <h3>No Entries Yet</h3>
+        <p>Start logging habits on the Dashboard to build your history.</p>
+        <br>
+        <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-icon">⚠️</div>
+      <h3>Delete Entry?</h3>
+      <p>Are you sure you want to delete the entry for <strong id="deleteDate"></strong>?</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="cancelDelete">Cancel</button>
+        <button class="btn" style="background:var(--danger-400);color:#fff;" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sampleData.js"></script>
+  <script src="app.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>

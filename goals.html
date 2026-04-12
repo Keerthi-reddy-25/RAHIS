@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HabitIQ Goals — Set weekly targets, track achievements, and earn badges for your habit journey.">
+  <title>Goals & Achievements — HabitIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="dashboard.html" class="nav-brand">
+        <div class="nav-brand-icon">🧠</div>
+        <span>HabitIQ</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="analytics.html">Analytics</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="goals.html" class="active">Goals</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="btn-nav-logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-container">
+
+    <!-- Header -->
+    <div class="page-header fade-in">
+      <h1>Goals & Achievements 🎯</h1>
+      <p>Set weekly targets and earn badges for your progress</p>
+    </div>
+
+    <!-- Motivational Quote -->
+    <div class="card fade-in quote-card" style="margin-bottom:24px; text-align:center; padding:32px;">
+      <div style="font-size:2rem; margin-bottom:8px;">💬</div>
+      <blockquote id="dailyQuote" style="font-size:1.1rem; font-style:italic; color:var(--text-secondary); line-height:1.6;">
+        "The secret of getting ahead is getting started."
+      </blockquote>
+      <cite id="quoteAuthor" style="font-size:0.82rem; color:var(--text-muted); display:block; margin-top:8px;">— Mark Twain</cite>
+    </div>
+
+    <!-- Weekly Goals Section -->
+    <div class="dashboard-grid">
+
+      <!-- Set Goals -->
+      <div class="card slide-up">
+        <div class="card-header">
+          <div class="card-icon green">🎯</div>
+          <div>
+            <div class="card-title">Weekly Goals</div>
+            <div class="card-subtitle">Set your targets for this week</div>
+          </div>
+        </div>
+        <form id="goalsForm">
+          <div class="form-group">
+            <label>🛏️ Target Sleep Hours (per day)</label>
+            <input type="number" id="goalSleep" class="form-input" min="4" max="12" step="0.5" value="7.5">
+          </div>
+          <div class="form-group">
+            <label>😰 Max Stress Level</label>
+            <input type="number" id="goalStress" class="form-input" min="1" max="10" value="4">
+          </div>
+          <div class="form-group">
+            <label>📱 Max Screen Time (hours/day)</label>
+            <input type="number" id="goalScreen" class="form-input" min="0" max="24" step="0.5" value="3">
+          </div>
+          <div class="form-group">
+            <label>🏃 Exercise Days per Week</label>
+            <input type="number" id="goalExercise" class="form-input" min="0" max="7" value="5">
+          </div>
+          <div class="form-group">
+            <label>💼 Target Work/Study Hours</label>
+            <input type="number" id="goalWork" class="form-input" min="0" max="16" step="0.5" value="7">
+          </div>
+          <div class="form-group">
+            <label>🎯 Target Habit Score (%)</label>
+            <input type="number" id="goalScore" class="form-input" min="10" max="100" step="5" value="75">
+          </div>
+          <button type="submit" class="btn btn-success btn-full btn-lg">💾 Save Goals</button>
+        </form>
+      </div>
+
+      <!-- Goal Progress -->
+      <div>
+        <div class="card slide-up" style="margin-bottom:24px;">
+          <div class="card-header">
+            <div class="card-icon orange">📊</div>
+            <div>
+              <div class="card-title">This Week's Progress</div>
+              <div class="card-subtitle">How you're doing against your targets</div>
+            </div>
+          </div>
+          <div id="goalProgressList" class="goal-progress-list"></div>
+        </div>
+
+        <!-- Weekly Overview -->
+        <div class="card slide-up">
+          <div class="card-header">
+            <div class="card-icon purple">📅</div>
+            <div>
+              <div class="card-title">Weekly Overview</div>
+              <div class="card-subtitle">Completion status by day</div>
+            </div>
+          </div>
+          <div id="weeklyOverview" class="weekly-overview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Section -->
+    <div style="margin-top:32px;">
+      <div class="page-header fade-in">
+        <h1>🏆 Achievements & Badges</h1>
+        <p>Unlock badges by maintaining healthy habits</p>
+      </div>
+      <div class="badge-grid" id="badgeGrid"></div>
+    </div>
+
+  </main>
+
+  <script src="sampleData.js"></script>
+  <script src="app.js"></script>
+  <script src="goals.js"></script>
+</body>
+</html>
